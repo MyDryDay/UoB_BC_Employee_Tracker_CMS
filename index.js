@@ -133,5 +133,21 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) throw error;
     console.log(`Connected as ID: ${connection.threadId}`);
+    
+    // Map data from departments table to an object variable
+    connection.query('select * from departments', (err, res) => {
+        departmentsTable = res.map(departments => ({name: departments.name, value: departments.id}))
+    })
+
+    // Map data from employees table to an object variable
+    connection.query('select * from employees', (err, res) => {
+        employeesTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
+    })
+
+    // Map data from roles table to an object variable
+    connection.query('select * from roles', (err, res) => {
+        rolesTable = res.map(roles => ({name: roles.name, value: roles.id}))
+    })
+
     connection.end();
 });
