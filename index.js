@@ -4,7 +4,9 @@ const mysql = require('mysql');
 const cTable = require('console.table');
 
 // Require classes
-// !!! Write classes & include here !!!
+const Departments = require('./lib/department');
+const Employees = require('./lib/employee');
+const Roles = require('./lib/role');
 
 // Establish connection to server
 const connection = mysql.createConnection({
