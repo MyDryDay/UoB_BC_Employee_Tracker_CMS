@@ -115,6 +115,7 @@ const allEmployees = () => {
 }
 
 const addDept = () => {
+    // Prompt the user for the department's name
     inquirer.prompt(
         {
             type: 'input',
@@ -122,8 +123,11 @@ const addDept = () => {
             name: 'name'
         }
     ).then((answer) => {
+        // Create new Deapartments object
         let newDept = new Departments(answer);
+        // Add the query with a placeholder for the department name (?)
         let query = 'insert into departments set ?';
+        // Send the query to the server
         connection.query(query, [newDept.name], (err, res) => {
             if(err) throw err;
             initialPrompt();
