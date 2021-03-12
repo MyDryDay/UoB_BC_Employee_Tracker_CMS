@@ -77,9 +77,13 @@ const initialPrompt = () => {
     });
 }
 
+// Function to display all departments within the database
 const allDept = () => {
+    // Holds the query we'll make to the database
     let query = 'select * from departments';
 
+    // Sends the query, prints the response & calls initialPrompt
+    // Or throws an error
     connection.query(query, (err, res) => {
         if(err) throw err;
         console.table(res);
@@ -88,6 +92,7 @@ const allDept = () => {
     });
 }
 
+// Function to display all roles within the database
 const allRoles = () => {
     let query = 'select * from roles';
     connection.query(query, (err, res) => {
@@ -98,6 +103,7 @@ const allRoles = () => {
     });
 }
 
+// Function to display all employees within the database
 const allEmployees = () => {
     let query = 'select * from employees';
     connection.query(query, (err, res) => {
