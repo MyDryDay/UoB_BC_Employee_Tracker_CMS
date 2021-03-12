@@ -85,8 +85,12 @@ const initialPrompt = () => {
                 addEmployee();
                 break;
 
+            case "Update an employee's role":
+                updateRole();
+                break;
+
             case "Exit":
-                // Call exit() function
+                exit();
                 break;
         }
     });
@@ -210,4 +214,10 @@ const addEmployee = () => {
             initialPrompt();
         });
     });
+}
+
+const 
+
+const exit = () => {
+    connection.end();
 }
