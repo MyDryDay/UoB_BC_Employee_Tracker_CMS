@@ -88,15 +88,15 @@ const allDept = () => {
     });
 }
 
-// const allRoles = () => {
-//     let query = 'select * from roles';
-//     connection.query(query, (err, res) => {
-//         if(err) throw err;
-//         console.table(res);
+const allRoles = () => {
+    let query = 'select * from roles';
+    connection.query(query, (err, res) => {
+        if(err) throw err;
+        console.table(res);
 
-//         initialPrompt();
-//     });
-// }
+        initialPrompt();
+    });
+}
 
 // const allEmployees = () => {
 //     let query = 'select * from employees';
