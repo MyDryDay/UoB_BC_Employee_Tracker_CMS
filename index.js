@@ -8,6 +8,8 @@ const Departments = require('./lib/department');
 const Employees = require('./lib/employee');
 const Roles = require('./lib/role');
 
+let roleTable;
+
 // Config variable for the connection
 const connectionConfig = {
     host: 'localhost',
@@ -24,6 +26,11 @@ const connection = mysql.createConnection(connectionConfig);
 connection.connect((err) => {
     if (err) throw error;
     console.log(`Connected as ID: ${connection.threadId}`);
+
+    connection.query('select * from departments', (err, res) => {
+        deptTable = res.map(departments => ({name: departments.name, value: departments.id}))
+    })
+
     initialPrompt();
     // connection.end();
 });
@@ -63,7 +70,7 @@ const initialPrompt = () => {
                 break;
 
             case "Add a role":
-                // Call addRole() function
+                addRole();
                 break;
 
             case "Add an employee":
@@ -129,6 +136,34 @@ const addDept = () => {
         let query = 'insert into departments set ?';
         // Send the query to the server
         connection.query(query, [newDept.name], (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the title of the new role?',
+            name: 'title'
+        },
+        {
+            type: 'input',
+            message: 'What is the salary for the new role?',
+            name: 'salary'
+        },
+        {
+            type: 'list',
+            message: 'What department does the new role belong to?',
+            choices: deptTable,
+            name: 'department_id'
+        }
+    ]).then((title, salary, department_id) => {
+        let newRole = new Roles(title, salary, department_id);
+        let query = 'insert into roles set ?';
+        connection.query(query, [newRole.title, newRole.salary, newRole.department_id], (err, res) => {
             if(err) throw err;
             initialPrompt();
         });
