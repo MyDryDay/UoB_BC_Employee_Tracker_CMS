@@ -59,7 +59,7 @@ const initialPrompt = () => {
                 break;
 
             case "Add a department":
-                // Call addDept() function
+                addDept();
                 break;
 
             case "Add a role":
@@ -111,6 +111,23 @@ const allEmployees = () => {
         console.table(res);
 
         initialPrompt();
+    });
+}
+
+const addDept = () => {
+    inquirer.prompt(
+        {
+            type: 'input',
+            message: 'What is the new department\'s name?',
+            name: 'name'
+        }
+    ).then((answer) => {
+        let newDept = new Departments(answer);
+        let query = 'insert into departments set ?';
+        connection.query(query, [newDept.name], (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
     });
 }
 
