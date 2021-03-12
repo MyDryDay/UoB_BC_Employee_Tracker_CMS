@@ -56,7 +56,7 @@ const initialPrompt = () => {
             "Add a department",
             "Add a role",
             "Add an employee",
-            "Update a role",
+            "Update an employee's role",
             "Exit"
         ]
     }).then((answer) => {
@@ -216,8 +216,37 @@ const addEmployee = () => {
     });
 }
 
-const 
+const updateRole = () => {
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which employee would you like to update the role of?',
+            choices: employeeTable,
+            name: 'employee_id'
+        },
+        {
+            type: 'list',
+            message: 'Which new role would you like to assign to this employee?',
+            choices: roleTable,
+            name: 'role_id'
+        }
+    ]).then((res) => {
+        let query = `update employees set role_id = ${res.role_id} where id = ${res.employee_id}`;
+        connection.query(query, (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
 
 const exit = () => {
     connection.end();
 }
+
+
+// TO DO
+// Find way to change manager_id when updating roles
+// Update managers
+// View employees by manager
+// Delete departments, roles & employees
+// View total budget of departments - view total salary of dept
