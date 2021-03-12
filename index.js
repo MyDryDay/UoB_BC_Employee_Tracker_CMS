@@ -8,146 +8,103 @@ const Departments = require('./lib/department');
 const Employees = require('./lib/employee');
 const Roles = require('./lib/role');
 
-// Variables for tables from database
-let rolesTable;
-let departmentsTable;
-let employeesTable;
-
-// Question arrays for inquirer prompts
-const initialPrompt = [
-    {
-        type: 'list',
-        message: 'What would you like to do?',
-        name: 'initialChoices',
-        choices: [
-            {
-                name: 'View all departments',
-                value: 'viewDepartments'
-            },
-            {
-                name: 'View all roles',
-                value: 'viewRoles'
-            },
-            {
-                name: 'View all employees',
-                value: 'viewEmployees'
-            },
-            {
-                name: 'Add a department',
-                value: 'addDepartment'
-            },
-            {
-                name: 'Add a role',
-                value: 'addRole'
-            },
-            {
-                name: 'Add an employee',
-                value: 'addEmployee'
-            },
-            {
-                name: 'Update a role',
-                value: 'updateRole'
-            },
-            {
-                name: 'Exit',
-                value: 'exitApp'
-            }
-        ]
-    }
-];
-
-const addDepartmentPropmpt = {
-    type: 'input',
-    message: 'What is the new department\'s name?',
-    name: 'deptName'
-};
-
-const addEmployeePrompt = [
-    {
-        type: 'input',
-        message: 'What is the first name of the employee?',
-        name: 'fName'
-    },
-    {
-        type: 'input',
-        message: 'What is the last name of the employee?',
-        name: 'lName'
-    },
-    {
-        type: 'list',
-        message: 'What is the current role ID of the employee?',
-        name: 'roleID',
-        choices: [1, 2, 3, 4, 5, 6]
-    },
-    {
-        type: 'list',
-        message: 'What is the employee\'s manager\'s ID?',
-        name: 'managerID',
-        choices: [1, 3, 5]
-    }
-];
-
-const addRolePrompt = [
-    {
-        type: 'input',
-        message: 'What is the name of the new role?',
-        name: 'role'
-    },
-    {
-        type: 'input',
-        message: 'What is the salary of the new role? (Whole numbers only)',
-        name: 'salary'
-    },
-    {
-        type: 'list',
-        message: 'What is the department ID the new role belongs to?',
-        name: 'departmentID',
-        choices: [1, 2, 3]
-    }
-];
-
-const updateRolePrompt = [
-    {
-        type: 'list',
-        message: 'Which employee\'s role would you like to update?',
-        name: 'employeeID',
-        choices: [1, 2, 3, 4, 5, 6]
-    },
-    {
-        type: 'list',
-        message: 'What is the new role of the employee?',
-        name: 'roleID',
-        choices: [1, 2, 3, 4, 5, 6]
-    }
-];
-
-// Establish connection to server
-const connection = mysql.createConnection({
+// Config variable for the connection
+const connectionConfig = {
     host: 'localhost',
     port: '3306',
     user: 'root',
     password: '',
     database: 'employee_db',
-});
+}
 
+// Creating connection
+const connection = mysql.createConnection(connectionConfig);
+
+// Establish connection to server
 connection.connect((err) => {
     if (err) throw error;
     console.log(`Connected as ID: ${connection.threadId}`);
-    
-    // Map data from departments table to an object variable
-    connection.query('select * from departments', (err, res) => {
-        departmentsTable = res.map(departments => ({name: departments.name, value: departments.id}))
-    })
-
-    // Map data from employees table to an object variable
-    connection.query('select * from employees', (err, res) => {
-        employeesTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
-    })
-
-    // Map data from roles table to an object variable
-    connection.query('select * from roles', (err, res) => {
-        rolesTable = res.map(roles => ({name: roles.name, value: roles.id}))
-    })
-
-    connection.end();
+    initialPrompt();
+    // connection.end();
 });
+
+// // Main prompt 
+// const initialPrompt = () => {
+//     inquirer.prompt({
+//         type: 'list',
+//         message: 'What would you like to do?',
+//         name: 'initialChoices',
+//         choices: [
+//             "View all departments",
+//             "View all roles",
+//             "View all employees",
+//             "Add a department",
+//             "Add a role",
+//             "Add an employee",
+//             "Update a role",
+//             "Exit"
+//         ]
+//     }).then((answer) => {
+//         switch(answer.initialChoices){
+//             case "View all departments":
+//                 allDept();
+//                 break;
+
+//             case "View all roles":
+//                 allRoles();
+//                 break;
+
+//             case "View all employees":
+//                 allEmployees();
+//                 break;
+
+//             case "Add a department":
+//                 // Call addDept() function
+//                 break;
+
+//             case "Add a role":
+//                 // Call addRole() function
+//                 break;
+
+//             case "Add an employee":
+//                 // Call addEmployee() function
+//                 break;
+
+//             case "Exit":
+//                 // Call exit() function
+//                 break;
+//         }
+//     });
+// }
+
+// const allDept = () => {
+//     let query = 'select * from departments';
+
+//     connection.query(query, (err, res) => {
+//         if(err) throw err;
+//         console.table(res);
+
+//         initialPrompt();
+//     });
+// }
+
+// const allRoles = () => {
+//     let query = 'select * from roles';
+//     connection.query(query, (err, res) => {
+//         if(err) throw err;
+//         console.table(res);
+
+//         initialPrompt();
+//     });
+// }
+
+// const allEmployees = () => {
+//     let query = 'select * from employees';
+//     connection.query(query, (err, res) => {
+//         if(err) throw err;
+//         console.table(res);
+
+//         initialPrompt();
+//     });
+// }
+
