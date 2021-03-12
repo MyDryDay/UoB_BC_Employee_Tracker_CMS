@@ -98,13 +98,13 @@ const allRoles = () => {
     });
 }
 
-// const allEmployees = () => {
-//     let query = 'select * from employees';
-//     connection.query(query, (err, res) => {
-//         if(err) throw err;
-//         console.table(res);
+const allEmployees = () => {
+    let query = 'select * from employees';
+    connection.query(query, (err, res) => {
+        if(err) throw err;
+        console.table(res);
 
-//         initialPrompt();
-//     });
-// }
+        initialPrompt();
+    });
+}
 
