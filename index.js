@@ -77,16 +77,16 @@ const initialPrompt = () => {
     });
 }
 
-// const allDept = () => {
-//     let query = 'select * from departments';
+const allDept = () => {
+    let query = 'select * from departments';
 
-//     connection.query(query, (err, res) => {
-//         if(err) throw err;
-//         console.table(res);
+    connection.query(query, (err, res) => {
+        if(err) throw err;
+        console.table(res);
 
-//         initialPrompt();
-//     });
-// }
+        initialPrompt();
+    });
+}
 
 // const allRoles = () => {
 //     let query = 'select * from roles';
