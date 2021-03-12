@@ -8,7 +8,9 @@ const Departments = require('./lib/department');
 const Employees = require('./lib/employee');
 const Roles = require('./lib/role');
 
+let deptTable;
 let roleTable;
+let employeeTable;
 
 // Config variable for the connection
 const connectionConfig = {
@@ -29,6 +31,12 @@ connection.connect((err) => {
 
     connection.query('select * from departments', (err, res) => {
         deptTable = res.map(departments => ({name: departments.name, value: departments.id}))
+    })
+    connection.query('select * from roles', (err, res) => {
+        roleTable = res.map(roles => ({name: roles.title, value: roles.id}))
+    })
+    connection.query('select * from employees', (err, res) => {
+        employeeTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
     })
 
     initialPrompt();
@@ -74,7 +82,7 @@ const initialPrompt = () => {
                 break;
 
             case "Add an employee":
-                // Call addEmployee() function
+                addEmployee();
                 break;
 
             case "Exit":
@@ -170,3 +178,36 @@ const addRole = () => {
     });
 }
 
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the first name of the new employee?',
+            name: 'f_name'
+        },
+        {
+            type: 'input',
+            message: 'What is the last name of the new employee?',
+            name: 'l_name'
+        },
+        {
+            type: 'list',
+            message: 'What role is the new employee taking on?',
+            choices: roleTable,
+            name: 'role_id'
+        },
+        {
+            type: 'list',
+            message: 'Who is the new employee\'s manager?',
+            choices: employeeTable,
+            name: 'manager_id'
+        }
+    ]).then((f_name, l_name, role_id, manager_id) => {
+        let newEmployee = new Employees(f_name, l_name, role_id, manager_id);
+        let query = 'insert into employees set ?';
+        connection.query(query, [newEmployee.f_name, newEmployee.l_name, newEmployee.role_id, newEmployee.manager_id], (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
