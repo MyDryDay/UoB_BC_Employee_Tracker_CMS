@@ -81,6 +81,8 @@ const initialPrompt = () => {
             "Add an employee",
             "Update an employee's role",
             "Delete a department",
+            "Delete a role",
+            "Delete an employee\'s records",
             "Exit"
         ]
     }).then((answer) => {
@@ -115,6 +117,14 @@ const initialPrompt = () => {
 
             case "Delete a department":
                 deleteDept();
+                break;
+
+            case "Delete a role":
+                // deleteRole();
+                break;
+
+            case "Delete an employee\'s records":
+                // deleteEmployee();
                 break;
 
             case "Exit":
@@ -286,6 +296,8 @@ const deleteDept = () => {
         });
     });
 }
+
+
 
 const exit = () => {
     connection.end();
