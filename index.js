@@ -120,7 +120,7 @@ const initialPrompt = () => {
                 break;
 
             case "Delete a role":
-                // deleteRole();
+                deleteRole();
                 break;
 
             case "Delete an employee\'s records":
@@ -297,7 +297,22 @@ const deleteDept = () => {
     });
 }
 
-
+const deleteRole = () => {
+    inquirer.prompt(
+        {
+            type: 'list',
+            message: 'Which role would you like to delete?',
+            choices: roleTable,
+            name: 'role_id'
+        }
+    ).then((res) => {
+        let query = `delete from roles where id = ${res.role_id}`;
+        connection.query(query, (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
 
 const exit = () => {
     connection.end();
