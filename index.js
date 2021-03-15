@@ -124,7 +124,7 @@ const initialPrompt = () => {
                 break;
 
             case "Delete an employee\'s records":
-                // deleteEmployee();
+                deleteEmployee();
                 break;
 
             case "Exit":
@@ -307,6 +307,23 @@ const deleteRole = () => {
         }
     ).then((res) => {
         let query = `delete from roles where id = ${res.role_id}`;
+        connection.query(query, (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
+
+const deleteEmployee = () => {
+    inquirer.prompt(
+        {
+            type: 'list',
+            message: 'Which employee\'s records would you like to delete?',
+            choices: employeeTable,
+            name: 'employee_id'
+        }
+    ).then((res) => {
+        let query = `delete from employees where id = ${res.employee_id}`;
         connection.query(query, (err, res) => {
             if(err) throw err;
             initialPrompt();
