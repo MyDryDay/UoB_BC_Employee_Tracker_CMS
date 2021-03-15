@@ -147,6 +147,7 @@ const allRoles = () => {
         if(err) throw err;
         console.table(res);
 
+        updateRoleVar();
         initialPrompt();
     });
 }
@@ -158,6 +159,7 @@ const allEmployees = () => {
         if(err) throw err;
         console.table(res);
 
+        updateEmployeeVar();
         initialPrompt();
     });
 }
