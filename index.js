@@ -8,6 +8,7 @@ const Departments = require('./lib/department');
 const Employees = require('./lib/employee');
 const Roles = require('./lib/role');
 
+// Defining database table variables
 let deptTable;
 let roleTable;
 let employeeTable;
@@ -26,22 +27,44 @@ const connection = mysql.createConnection(connectionConfig);
 
 // Establish connection to server
 connection.connect((err) => {
-    if (err) throw error;
+    if (err) throw err;
     console.log(`Connected as ID: ${connection.threadId}`);
 
-    connection.query('select * from departments', (err, res) => {
-        deptTable = res.map(departments => ({name: departments.name, value: departments.id}))
-    })
-    connection.query('select * from roles', (err, res) => {
-        roleTable = res.map(roles => ({name: roles.title, value: roles.id}))
-    })
-    connection.query('select * from employees', (err, res) => {
-        employeeTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
-    })
+    // connection.query('select * from departments', (err, res) => {
+    //     deptTable = res.map(departments => ({name: departments.name, value: departments.id}))
+    // })
+    // connection.query('select * from roles', (err, res) => {
+    //     roleTable = res.map(roles => ({name: roles.title, value: roles.id}))
+    // })
+    // connection.query('select * from employees', (err, res) => {
+    //     employeeTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
+    // })
 
+    updateDeptVar();
+    updateRoleVar();
+    updateEmployeeVar();
     initialPrompt();
     // connection.end();
 });
+
+// SQL queries to update database table variables
+const updateDeptVar = () => {
+    connection.query('select * from departments', (err, res) => {
+        deptTable = res.map(departments => ({name: departments.name, value: departments.id}))
+    });
+}
+
+const updateRoleVar = () => {
+    connection.query('select * from roles', (err, res) => {
+        roleTable = res.map(roles => ({name: roles.title, value: roles.id}))
+    });
+}
+
+const updateEmployeeVar = () => {
+    connection.query('select * from employees', (err, res) => {
+        employeeTable = res.map(employees => ({name: `${employees.f_name} ${employees.l_name}`, value: employees.id}))
+    });
+}
 
 // Main prompt 
 const initialPrompt = () => {
@@ -57,6 +80,7 @@ const initialPrompt = () => {
             "Add a role",
             "Add an employee",
             "Update an employee's role",
+            "Delete a department",
             "Exit"
         ]
     }).then((answer) => {
@@ -89,6 +113,10 @@ const initialPrompt = () => {
                 updateRole();
                 break;
 
+            case "Delete a department":
+                deleteDept();
+                break;
+
             case "Exit":
                 exit();
                 break;
@@ -107,6 +135,7 @@ const allDept = () => {
         if(err) throw err;
         console.table(res);
 
+        updateDeptVar();
         initialPrompt();
     });
 }
@@ -220,7 +249,7 @@ const updateRole = () => {
     inquirer.prompt([
         {
             type: 'list',
-            message: 'Which employee would you like to update the role of?',
+            message: 'Which employee\'s role would you like to update?',
             choices: employeeTable,
             name: 'employee_id'
         },
@@ -232,6 +261,23 @@ const updateRole = () => {
         }
     ]).then((res) => {
         let query = `update employees set role_id = ${res.role_id} where id = ${res.employee_id}`;
+        connection.query(query, (err, res) => {
+            if(err) throw err;
+            initialPrompt();
+        });
+    });
+}
+
+const deleteDept = () => {
+    inquirer.prompt(
+        {
+            type: 'list',
+            message: 'Which department would you like to delete?',
+            choices: deptTable,
+            name: 'department_id'
+        }
+    ).then((res) => {
+        let query = `delete from departments where id = ${res.department_id}`;
         connection.query(query, (err, res) => {
             if(err) throw err;
             initialPrompt();
