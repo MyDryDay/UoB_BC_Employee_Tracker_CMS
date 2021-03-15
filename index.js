@@ -174,6 +174,7 @@ const allEmployees = () => {
     });
 }
 
+// Function to add a department to the database's departments table
 const addDept = () => {
     // Prompt the user for the department's name
     inquirer.prompt(
@@ -195,6 +196,7 @@ const addDept = () => {
     });
 }
 
+// Function to add a role to the database's roles table
 const addRole = () => {
     inquirer.prompt([
         {
@@ -223,6 +225,7 @@ const addRole = () => {
     });
 }
 
+// Function to add an employee to the database's employees table
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -257,6 +260,7 @@ const addEmployee = () => {
     });
 }
 
+// Function to update a role that exists in the databse's roles table
 const updateRole = () => {
     inquirer.prompt([
         {
@@ -280,6 +284,7 @@ const updateRole = () => {
     });
 }
 
+// Function to delete a department that exists in the database's departments table
 const deleteDept = () => {
     inquirer.prompt(
         {
@@ -297,6 +302,7 @@ const deleteDept = () => {
     });
 }
 
+// Function to delete a role that exists in the database's roles table
 const deleteRole = () => {
     inquirer.prompt(
         {
@@ -314,6 +320,7 @@ const deleteRole = () => {
     });
 }
 
+// Function to delete an employee's records that exist in the databse's employee table
 const deleteEmployee = () => {
     inquirer.prompt(
         {
@@ -331,14 +338,7 @@ const deleteEmployee = () => {
     });
 }
 
+// Function to exit out of the application
 const exit = () => {
     connection.end();
 }
-
-
-// TO DO
-// Find way to change manager_id when updating roles
-// Update managers
-// View employees by manager
-// Delete departments, roles & employees
-// View total budget of departments - view total salary of dept
