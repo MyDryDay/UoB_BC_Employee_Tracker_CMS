@@ -30,12 +30,12 @@ insert into employees (f_name, l_name, role_id, manager_id) values ("Pam", "Poov
 insert into employees (f_name, l_name, role_id, manager_id) values ("Malory", "Archer", 6, 5);
 
 
--- Shows all data in departments table
-select * from departments;
--- Shows all data in employees table
-select * from employees;
--- Shows all data in roles table
-select * from roles;
+-- -- Shows all data in departments table
+-- select * from departments;
+-- -- Shows all data in employees table
+-- select * from employees;
+-- -- Shows all data in roles table
+-- select * from roles;
 
 
 
